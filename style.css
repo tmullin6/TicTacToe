@@ -1,0 +1,28 @@
+#title {
+    text-align: center;
+    font-size: 48px;
+    margin-bottom: 30px;
+}
+
+.gameboard {
+    display:inline-block;
+    height: 400px;
+    width: 400px;
+    margin-left: 35vw;
+
+}
+
+.gamesquare {
+    float: left;
+    height:123px;
+    width:123px;
+}
+
+#gamequare-1 {
+    float: left;
+    height:123px;
+    width: 123px;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+}
+
