@@ -1,7 +1,21 @@
 #title {
     text-align: center;
+    margin-top: 18vw;
     font-size: 48px;
     margin-bottom: 30px;
+}
+
+#start {
+    cursor: pointer;
+    display: block;
+    margin-left: 42vw;
+    margin-top: 40px;
+    box-shadow: 2px 2px blue;
+    border-radius: 3px;
+    height:100px;
+    width:200;
+    font-size: 40px;
+    background-color: aquamarine;
 }
 
 .gameboard {
@@ -16,13 +30,7 @@
     float: left;
     height:123px;
     width:123px;
+    border: 2px solid black;
 }
 
-#gamequare-1 {
-    float: left;
-    height:123px;
-    width: 123px;
-    border-bottom: 2px solid black;
-    border-right: 2px solid black;
-}
 
