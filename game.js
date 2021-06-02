@@ -9,8 +9,10 @@ start.addEventListener("click",()=>{
     const player1=Player('Player 1','X');
     const player2=Player('Player 2','O');
     startscreen.removeChild(start);
-    game.play(player2);
+    game.play(player1);
+    
 });
+
 
 
 
@@ -18,7 +20,8 @@ start.addEventListener("click",()=>{
 const gameBoard = (()=>{                //Game board module
 
     let board =[];
-    let win =false;
+    let win = false;
+    
 
     const renderBoard = ()=>{
 
@@ -36,37 +39,72 @@ const gameBoard = (()=>{                //Game board module
     
     };
 
-    const checkWinner=()=>{
-
+    const winHorizontal=(player)=>{
         
+
         for (let i=0;i<board.length;i++){
 
+            if(board[i].textContent===player.symbol && board[i+1].textContent===player.symbol 
+                && board[i+2].textContent===player.symbol){
+               return win = true;
+            }
+            else {
+                return ;
+            }
+        };
 
-            if(board[i].textContent=='X' && board[i+1].textContent=='X' && board[i+2].textContent=='X'){
-                win=true;
-            }
-            else if(board[i].textContent=='X' && board[i+3].textContent=='X' && board[i+6].textContent=='X'){
-                win=true;
-                
-            }
-            else if(board[i].textContent=='X' && board[i+4].textContent=='X' && board[i+8].textContent=='X'){
-                win=true;
-                
-            }
-            else if(board[i].textContent=='X' && board[i+2].textContent=='X' && board[i+4].textContent=='X'){
-                win=true;
-                
-            }
+    };
 
+    const winVertical=(player)=>{
+        
+
+        for (let i=0;i<board.length;i++){
+
+            if(board[i].textContent===player.symbol && board[i+3].textContent===player.symbol 
+                && board[i+6].textContent===player.symbol){
+                return win=true;
+            }
+            else {
+                return;
+            }
+        };
+    };
+
+    const winDiagonal=(player)=>{
+        
+
+        for (let i=0;i<board.length;i++){
+
+            if(board[i].textContent===player.symbol && board[i+4].textContent===player.symbol 
+                && board[i+8].textContent===player.symbol){
+
+            return win =true;
+            
         }
+        else if(board[i].textContent===player.symbol && board[i+2].textContent===player.symbol 
+            && board[i+4].textContent===player.symbol){
+                return win = true;
+        }
+        else {
+            return;
+        }
+        
+        };
 
 
+    };
 
-    }
+    const checkWinner=(player)=>{
 
-  
+        if (win = false) {
+            winHorizontal(player);
 
-    
+            winVertical(player);
+
+            winDiagonal(player);
+        }
+        return win;
+        };
 
 
     return {board,renderBoard,checkWinner,win};
@@ -75,27 +113,38 @@ const gameBoard = (()=>{                //Game board module
 
 const game =(()=>{
 
-    const play =(player)=>{
-        makePlay(player);
-        gameBoard.checkWinner();
-        if(gameBoard.win=true){
-            player.winGame();
-        }
+    
+
+    const play =(player1)=>{
+
+            
+            makePlay(player1);
+            
+           
+
+          
         
     }
 
     const makePlay=(player)=>{
         const square = document.querySelectorAll(".gamesquare");
-        for (let i =0;i<square.length; i++){
-            square[i].addEventListener("click",()=>{
-                if(square[i].textContent==""){
-                    square[i].textContent=player.symbol;
+        gameBoard.board=Array.from(square);
+        for (let i =0;i<gameBoard.board.length; i++){
+            gameBoard.board[i].addEventListener("click",()=>{
+                if(gameBoard.board[i].textContent==""){
+                    gameBoard.board[i].textContent=player.symbol;
+                    gameBoard.checkWinner(player);
+                    console.log(gameBoard.win);
                 }
                 else{
                     return;
                 };
             });
         };
+        
+        
+        
+        
 
     };
 
@@ -110,14 +159,6 @@ const Player = (name,symbol) => {                 //Player Factory Function
 
     let score=0;
 
-    const winGame=()=>{
-
-            alert(`${name} has won the game`);
-            score+=1;
-        
-    }
-
-    
-
-    return{name, symbol,score,winGame}
+   
+    return{name, symbol,score}
 };
