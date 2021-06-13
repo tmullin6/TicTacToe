@@ -2,6 +2,8 @@ const startscreen = document.querySelector(".startscreen");
 const start = document.querySelector("#start");
 const title = document.querySelector("#title");
 
+let turn = 'player1';
+let win = false;
 
 start.addEventListener("click",()=>{
     title.setAttribute("style","margin-top:20px;");
@@ -10,10 +12,8 @@ start.addEventListener("click",()=>{
     const player2=Player('Player 2','O');
 
     gameBoard.renderBoard();
-  
-    
-    game.play(player1);
-    
+    game.play(player1,player2);
+   
 });
 
 
@@ -23,15 +23,13 @@ start.addEventListener("click",()=>{
 const gameBoard = (()=>{                //Game board module
 
     let board =[];
-    let win = false;
     
-
     const renderBoard = ()=>{               //Create 3X3 board of square divs in play area
 
         const gamearea = document.createElement("div");
         gamearea.classList.add("gameboard");
         startscreen.appendChild(gamearea);
-
+     
         for (let i =0;i<9;i++){
             const gamesquare = document.createElement("div");
             gamesquare.classList.add("gamesquare");
@@ -41,116 +39,99 @@ const gameBoard = (()=>{                //Game board module
     
     };
 
+    const winHorizontal = (board,player)=>{
 
-    const winHorizontal=(board)=>{
-        
-
-        //for (let i=0;i<board.length;i++){
-
-            if(board[i].textContent==='X' && board[i+1].textContent==='X'
-                && board[i+2].textContent==='X'){
-                
-                    win = true;
-            }if(board[i].textContent==='X' && board[i+1].textContent==='X'
-            && board[i+2].textContent==='X'){
+        if(board[0].textContent===player.symbol && board[1].textContent===player.symbol
+            && board[2].textContent===player.symbol){
+            alert(`${player.name} wins`);
+            win =true;
             
-                win = true;
         }
-            else {
-                win=false;
-            }
-        //};
-        return win;
 
-    };
-
-    const winVertical=(board)=>{
-        
-
-        for (let i=0;i<board.length;i++){
-
-            if(board[i].textContent=== 'X' && board[i+3].textContent==='X' 
-                && board[i+6].textContent==='X'){
+        else if(board[3].textContent===player.symbol && board[4].textContent===player.symbol
+            && board[5].textContent===player.symbol){
+                alert(`${player.name} wins`);
                 win=true;
-            }
-            else {
-                win=false;
-            }
-        };
-        return win;
-    };
-
-    const winDiagonal=(board)=>{
-        
-
-        for (let i=0;i<board.length;i++){
-
-            if(board[i].textContent==='X' && board[i+4].textContent==='X' 
-                && board[i+8].textContent==='X'){
-
-            win =true;
-            
         }
-        else if(board[i].textContent==='X' && board[i+2].textContent==="X"
-            && board[i+4].textContent==='X'){
-                win = true;
+
+        else if(board[6].textContent===player.symbol && board[7].textContent===player.symbol
+            && board[8].textContent===player.symbol){
+                alert(`${player.name} wins`);
+                win=true;
         }
+
         else {
-            win=false;
+            return;
+        }
+    };
+
+    const winVertical=(board,player)=>{
+        
+        if(board[0].textContent=== player.symbol && board[3].textContent===player.symbol 
+            && board[6].textContent===player.symbol){
+                alert(`${player.name} wins`);
+                win=true;
+        }
+
+        else if(board[1].textContent=== player.symbol && board[4].textContent===player.symbol 
+            && board[7].textContent===player.symbol){
+                alert(`${player.name} wins`);
+                win=true;
+        }
+
+        else if(board[2].textContent=== player.symbol && board[5].textContent===player.symbol 
+            && board[8].textContent===player.symbol){
+                alert(`${player.name} wins`);
+                win=true;
+        }
+
+        else {
+            return;
         }
         
-        };
-        return win;
+    };
 
+    const winDiagonal=(board,player)=>{
+        
+
+        if(board[0].textContent===player.symbol && board[4].textContent===player.symbol 
+            && board[8].textContent===player.symbol){
+                alert(`${player.name} wins`);
+                win=true;
+        }
+
+        else if(board[2].textContent===player.symbol && board[4].textContent===player.symbol
+            && board[6].textContent===player.symbol){
+                alert(`${player.name} wins`);
+                win=true;
+        }
+
+        else {
+            return;
+        }
+        
+    };
+      
+
+    const checkWinner=(board,player)=>{
+
+        
+        winHorizontal(board,player);
+        winVertical(board,player);
+        winDiagonal(board,player); 
 
     };
 
-    const checkWinner=(board)=>{
 
-        for (let i=0;i<board.length;i++){
+    return {board,renderBoard,checkWinner};
 
-            if(board[i].textContent==='X' && board[i+1].textContent==='X'
-                && board[i+2].textContent==='X'){
-                    win = true;
-            }
-            else if (board[i].textContent=== 'X' && board[i+3].textContent==='X' 
-            && board[i+6].textContent==='X'){
-            win=true;
-        }
-
-        else if(board[i].textContent==='X' && board[i+4].textContent==='X' 
-                && board[i+8].textContent==='X'){
-
-            win =true;
-            
-        }
-
-        else if(board[i].textContent==='X' && board[i+2].textContent==="X"
-            && board[i+4].textContent==='X'){
-                win = true;
-        }
-
-        }
-        
-        };
-
-
-    return {board,renderBoard,checkWinner,win};
 })();
 
 
 const game =(()=>{
 
-    
-
-    const play =(player1)=>{
-
-    
-        makePlay(player1);
-                      
-    }
-
-    const makePlay=(player)=>{
+   
+    const play=(player1,player2)=>{
         const square = document.querySelectorAll(".gamesquare");
         gameBoard.board=Array.from(square);
 
@@ -158,26 +139,27 @@ const game =(()=>{
 
             gameBoard.board[i].addEventListener("click",()=>{
 
-                if(gameBoard.board[i].textContent==""){
-                    gameBoard.board[i].textContent=player.symbol;
+                if(gameBoard.board[i].textContent!==""){
+                     return;   
                 }
 
-                gameBoard.checkWinner(gameBoard.board);
-                console.log(gameBoard.win);
+                if(turn=='player1') {
+                    gameBoard.board[i].textContent="X";
+                    gameBoard.checkWinner(gameBoard.board,player1);
+                    turn ='player2';
+                }
+                else {
+                    gameBoard.board[i].textContent="O";
+                    gameBoard.checkWinner(gameBoard.board,player2);
+                    turn='player1'
+                }
+                  
             });
         };
         
-        
-        
-        
-
     };
 
-
-
-    
-
-    return{makePlay,play};
+    return{play};
 })();
 
 const Player = (name,symbol) => {                 //Player Factory Function
