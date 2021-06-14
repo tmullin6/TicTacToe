@@ -27,6 +27,8 @@
 }
 
 .gamesquare {
+    font-family: 'Do Hyeon', sans-serif;
+    color: blue;
     float: left;
     height:123px;
     width:123px;
@@ -36,6 +38,31 @@
     vertical-align: center;
 }
 
+.playerarea {
+    display:flex;
+    justify-content: center;
 
+}
+
+.symbolarea {
+    display:flex;
+    justify-content: center;
+}
+
+
+.players {
+    font-size: 38px;
+    margin-right: 10px;
+    margin-left:10px;
+    
+}
+
+.symbols {
+    font-size: 40px;
+    font-family: 'Do Hyeon', sans-serif;
+    margin-right: 50px;
+    margin-left: 30px;
+    margin-bottom: 30px;
+}
 
 
