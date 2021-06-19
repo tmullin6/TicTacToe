@@ -4,30 +4,33 @@ const start = document.querySelector("#start");
 const title = document.querySelector("#title");
 
 //Global variables to control game flow
+let winner='';
+let round = 0;
 let turn = 'player1';
-let winner;
 
 
+//Event listener to start the game and render the game board
 start.addEventListener("click",()=>{
     title.setAttribute("style","margin-top:20px;");
     startscreen.removeChild(start);
-    const player1=Player('Player 1','X');
-    const player2=Player('Player 2','O');
+    
+    const player1=Player();
+    const player2=Player();
+
+    player1.name=player1.setName();
+    player2.name=player2.setName();
 
     gameBoard.renderBoard(player1,player2);
     game.play(player1,player2);
-   
 });
 
 
-
-
-
-const gameBoard = (()=>{                //Game board module
-
+//Game board module that has functions to control display and checks the game board for a winner
+const gameBoard = (()=>{                
     let board =[];
     
-    const renderBoard = (player1,player2)=>{               //Create 3X3 board of square divs in play area
+     //Create 3X3 board of square divs in play area
+    const renderBoard = (player1,player2)=>{              
 
         const playerNames = document.createElement('div');
         const playerSymbols=document.createElement('div');
@@ -67,33 +70,122 @@ const gameBoard = (()=>{                //Game board module
     
     };
 
-    const clearBoard=(board)=>{
+    /*Function that updates the page with a screen displaying the winner and gives the option to replay 
+    the game or exit back to start screen*/
+    const endGame=(player)=>{
+        winner =" ";
 
-        for(let i=0;i<board.length;i++){
-            board[i].textContent='';
+        while (startscreen.firstChild) {
+            startscreen.removeChild(startscreen.lastChild);
         }
 
+        const winName=document.createElement('p');
+        const restart = document.createElement('button');
+        const exit = document.createElement('button');
+        winName.classList.add('winner');
+
+        
+        winName.textContent=`${player} is the winner`;
+        
+        
+        restart.classList.add('restart');
+        exit.classList.add('exit');
+        restart.textContent="Play Again?";
+        exit.textContent="Exit";
+        startscreen.appendChild(winName);
+        startscreen.appendChild(restart);
+        startscreen.appendChild(exit);
+
+        restart.addEventListener("click",()=>{
+            startscreen.removeChild(winName);
+            startscreen.removeChild(restart);
+            startscreen.removeChild(exit);
+
+            for (let i =0;i<board.length;i++){
+                board[i].textContent="";
+            }
+
+            round=0;
+            turn='player1';
+
+            const player1=Player('Player 1','X');
+            const player2=Player('Player 2','O');
+            
+            gameBoard.renderBoard(player1,player2);
+            game.play(player1,player2);
+        });
+
+        exit.addEventListener('click', ()=>{
+            window.location.reload(false);
+        });
+
+        
     };
 
+    //Function that updates the page with a screen displaying the result of a tie game
+    const tieGame=()=>{
+        winner =" ";
+        while (startscreen.firstChild) {
+            startscreen.removeChild(startscreen.lastChild);
+        }
+
+        const winName=document.createElement('p');
+        const restart = document.createElement('button');
+        const exit = document.createElement('button');
+        winName.classList.add('winner');
+        winName.textContent="Tie Game";
+        restart.classList.add('restart');
+        exit.classList.add('exit');
+        restart.textContent="Play Again?";
+        exit.textContent="Exit";
+        startscreen.appendChild(winName);
+        startscreen.appendChild(restart);
+        startscreen.appendChild(exit);
+
+        restart.addEventListener("click",()=>{
+            startscreen.removeChild(winName);
+            startscreen.removeChild(restart);
+            startscreen.removeChild(exit);
+            for (let i =0;i<board.length;i++){
+                board[i].textContent="";
+            }
+            
+            round=0;
+            turn='player1';
+            
+            const player1=Player('Player 1','X');
+            const player2=Player('Player 2','O');
+        
+            gameBoard.renderBoard(player1,player2);
+            game.play(player1,player2);
+        });
+        
+        exit.addEventListener('click', ()=>{
+            window.location.reload(false);
+        });
+    };
+
+    //Fucntion that checks game board for a horizontal win on any row 
     const winHorizontal = (board,player)=>{
 
         if(board[0].textContent===player.symbol && board[1].textContent===player.symbol
             && board[2].textContent===player.symbol){
-            alert(`${player.name} wins`);
-            winner=player.name;
+                winner=player.name;
+            endGame(player.name);
+
             
         }
 
         else if(board[3].textContent===player.symbol && board[4].textContent===player.symbol
             && board[5].textContent===player.symbol){
-                alert(`${player.name} wins`);
                 winner=player.name;
+                endGame(player.name);
         }
 
         else if(board[6].textContent===player.symbol && board[7].textContent===player.symbol
             && board[8].textContent===player.symbol){
-                alert(`${player.name} wins`);
                 winner=player.name;
+                endGame(player.name);
                 
         }
 
@@ -102,26 +194,27 @@ const gameBoard = (()=>{                //Game board module
         }
     };
 
+    //Function that checks game board for a vertical win on any column
     const winVertical=(board,player)=>{
         
         if(board[0].textContent=== player.symbol && board[3].textContent===player.symbol 
             && board[6].textContent===player.symbol){
-                alert(`${player.name} wins`);
                 winner=player.name;
+                endGame(player.name);
                 
         }
 
         else if(board[1].textContent=== player.symbol && board[4].textContent===player.symbol 
             && board[7].textContent===player.symbol){
-                alert(`${player.name} wins`);
                 winner=player.name;
+                endGame(player.name);
                 
         }
 
         else if(board[2].textContent=== player.symbol && board[5].textContent===player.symbol 
             && board[8].textContent===player.symbol){
-                alert(`${player.name} wins`);
                 winner=player.name;
+                endGame(player.name);
                 
         }
 
@@ -131,20 +224,20 @@ const gameBoard = (()=>{                //Game board module
         
     };
 
+    //Function that checks game board for a diagonal win on either of the diagonal directions
     const winDiagonal=(board,player)=>{
         
 
         if(board[0].textContent===player.symbol && board[4].textContent===player.symbol 
             && board[8].textContent===player.symbol){
-                alert(`${player.name} wins`);
                 winner=player.name;
-                
+                endGame(player.name);
         }
 
         else if(board[2].textContent===player.symbol && board[4].textContent===player.symbol
             && board[6].textContent===player.symbol){
-                alert(`${player.name} wins`);
                 winner=player.name;
+                endGame(player.name);
                 
         }
 
@@ -154,78 +247,101 @@ const gameBoard = (()=>{                //Game board module
         
     };
       
-
+    //Function that checks the entire game board for a win anywhere
     const checkWinner=(board,player)=>{
 
         
         winHorizontal(board,player);
         winVertical(board,player);
         winDiagonal(board,player); 
-
+        console.log(winner);
     };
 
 
-    return {board,renderBoard,checkWinner,clearBoard};
-
+    return {renderBoard,checkWinner,endGame,tieGame};
 })();
 
 
-const game =(()=>{
-
-   let round = 0;
-
+//Game module that controls the logic behind the Tic Tac Toe game
+const game =(()=>{ 
+   
+    //Play function that controls the overall game flow
     const play=(player1,player2)=>{
+        
         const square = document.querySelectorAll(".gamesquare");
         gameBoard.board=Array.from(square);
 
         for (let i =0;i<gameBoard.board.length; i++){
-
+            
             gameBoard.board[i].addEventListener("click",()=>{
 
+                
                 if(gameBoard.board[i].textContent!==""){
-                     return;   
+                    return;   
                 }
 
                 if(turn=='player1') {
                     gameBoard.board[i].textContent=player1.symbol;
                     gameBoard.checkWinner(gameBoard.board,player1);
-                    
-                    if(winner=='Player 1'){
-                        gameBoard.clearBoard(gameBoard.board);
-                    }
-                    else{
                     turn ='player2';
                     round++;
-                    }
                 }
+                 
                 else {
                     gameBoard.board[i].textContent=player2.symbol;
                     gameBoard.checkWinner(gameBoard.board,player2);
-
-                    if(winner=='Player 2'){
-                        gameBoard.clearBoard(gameBoard.board);
-                    }
-                    else{
                     turn ='player1';
                     round++;
-                    }
+                    
                 }
 
                 if(round==9){
-                    alert("Tie Game");
-                    gameBoard.clearBoard(gameBoard.board);
+                    gameBoard.checkWinner(gameBoard.board,player1);
+                    gameBoard.checkWinner(gameBoard.board,player2);
+
+                    if(winner=="Player 1" || winner=="Player 2"){
+                        gameBoard.endGame(winner);
+                    }
+                    else {
+                    gameBoard.tieGame();
+                    }
                 }
-                  
-            });
-        };
-        
+            
+            }); 
+        }
     };
 
     return{play};
 })();
 
-const Player = (name,symbol) => {                 //Player Factory Function
+//Player Factory Function
+const Player = (name,symbol) => {                 
 
+    const setName = ()=>{
+        const nameForm = document.createElement('div');
+        const namePrompt = document.createElement('p');
+        const nameField = document.createElement('input');
+        const nameButton = document.createElement('button');
+
+        nameForm.classList.add('name-form');
+        namePrompt.textContent='Enter Player name';
+        nameField.type="textbox";
+        nameButton.textContent="Enter";
+
+        startscreen.appendChild(nameForm);
+        nameForm.appendChild(namePrompt);
+        nameForm.appendChild(nameField);
+        nameForm.appendChild(nameButton);
+
+        nameButton.addEventListener("click",()=>{
+            playerName =  nameField.textContent;
+
+            startscreen.removeChild(nameForm);
+            
+            return playerName;
+        });
+
+    };
    
-    return{name, symbol}
+    return{setName ,name, symbol}
 };

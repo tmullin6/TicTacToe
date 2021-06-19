@@ -27,6 +27,7 @@
 }
 
 .gamesquare {
+    cursor: pointer;
     font-family: 'Do Hyeon', sans-serif;
     color: blue;
     float: left;
@@ -65,4 +66,35 @@
     margin-bottom: 30px;
 }
 
+
+
+.winner {
+    font-size: 48px;
+    text-align: center;
+    margin-top:20vw;
+    margin-bottom:20px;
+}
+
+.restart {
+    display:inline-block;
+    cursor:pointer;
+    text-align: center;
+    margin-left:43vw;
+    
+    font-size: 24px;
+    background-color: aquamarine;
+    box-shadow: 2px 2px blue;
+    border-radius: 3px;
+}
+
+.exit {
+    display:inline-block;
+    cursor:pointer;
+    text-align: center;
+    margin-left:10px;
+    font-size: 24px;
+    background-color: red;
+    box-shadow: 2px 2px black;
+    border-radius: 3px;
+}
 
