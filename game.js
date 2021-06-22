@@ -14,11 +14,9 @@ start.addEventListener("click",()=>{
     title.setAttribute("style","margin-top:20px;");
     startscreen.removeChild(start);
     
-    const player1=Player();
-    const player2=Player();
+    const player1=Player('Player 1','X');
+    const player2=Player('Player 2','O');
 
-    player1.name=player1.setName();
-    player2.name=player2.setName();
 
     gameBoard.renderBoard(player1,player2);
     game.play(player1,player2);
@@ -67,6 +65,24 @@ const gameBoard = (()=>{
             gamearea.appendChild(gamesquare);
         }
 
+        playerName1.addEventListener('click',()=>{
+            playerNames.removeChild(playerName1);
+            const nameInput=document.createElement("input");
+            const nameSubmit=document.createElement("submit");
+            nameInput.type="text";
+            nameSubmit.textContent="Enter";
+            nameSubmit.setAttribute("style","display:inline-block; cursor:pointer; background-color:blue;");
+            playerNames.appendChild(nameInput);
+            playerNames.appendChild(nameSubmit);
+
+            nameSubmit.addEventListener("click",()=>{
+                player1.name=nameInput.textContent;
+                playerNames.removeChild(nameInput);
+                playerNames.removeChild(nameSubmit);
+                playerNames.appendChild(playerName1);
+            });
+
+        });
     
     };
 
@@ -100,6 +116,7 @@ const gameBoard = (()=>{
             startscreen.removeChild(winName);
             startscreen.removeChild(restart);
             startscreen.removeChild(exit);
+            startscreen.appendChild(title);
 
             for (let i =0;i<board.length;i++){
                 board[i].textContent="";
@@ -165,15 +182,15 @@ const gameBoard = (()=>{
         });
     };
 
-    //Fucntion that checks game board for a horizontal win on any row 
-    const winHorizontal = (board,player)=>{
+      
+    //Function that checks the game board for a win horizontal,vertical,or diagonally
+    const checkWinner=(board,player)=>{
 
+        //Check for a horizontal win
         if(board[0].textContent===player.symbol && board[1].textContent===player.symbol
             && board[2].textContent===player.symbol){
                 winner=player.name;
-            endGame(player.name);
-
-            
+            endGame(player.name); 
         }
 
         else if(board[3].textContent===player.symbol && board[4].textContent===player.symbol
@@ -185,50 +202,30 @@ const gameBoard = (()=>{
         else if(board[6].textContent===player.symbol && board[7].textContent===player.symbol
             && board[8].textContent===player.symbol){
                 winner=player.name;
-                endGame(player.name);
-                
+                endGame(player.name);      
         }
 
-        else {
-            return;
-        }
-    };
-
-    //Function that checks game board for a vertical win on any column
-    const winVertical=(board,player)=>{
-        
-        if(board[0].textContent=== player.symbol && board[3].textContent===player.symbol 
+        //Check for vertical win
+        else if(board[0].textContent=== player.symbol && board[3].textContent===player.symbol 
             && board[6].textContent===player.symbol){
                 winner=player.name;
-                endGame(player.name);
-                
+                endGame(player.name);       
         }
 
         else if(board[1].textContent=== player.symbol && board[4].textContent===player.symbol 
             && board[7].textContent===player.symbol){
                 winner=player.name;
-                endGame(player.name);
-                
+                endGame(player.name);    
         }
 
         else if(board[2].textContent=== player.symbol && board[5].textContent===player.symbol 
             && board[8].textContent===player.symbol){
                 winner=player.name;
-                endGame(player.name);
-                
+                endGame(player.name);      
         }
 
-        else {
-            return;
-        }
-        
-    };
-
-    //Function that checks game board for a diagonal win on either of the diagonal directions
-    const winDiagonal=(board,player)=>{
-        
-
-        if(board[0].textContent===player.symbol && board[4].textContent===player.symbol 
+        //Check for either diagonal win
+        else if(board[0].textContent===player.symbol && board[4].textContent===player.symbol 
             && board[8].textContent===player.symbol){
                 winner=player.name;
                 endGame(player.name);
@@ -237,26 +234,13 @@ const gameBoard = (()=>{
         else if(board[2].textContent===player.symbol && board[4].textContent===player.symbol
             && board[6].textContent===player.symbol){
                 winner=player.name;
-                endGame(player.name);
-                
+                endGame(player.name);       
         }
 
         else {
             return;
         }
-        
     };
-      
-    //Function that checks the entire game board for a win anywhere
-    const checkWinner=(board,player)=>{
-
-        
-        winHorizontal(board,player);
-        winVertical(board,player);
-        winDiagonal(board,player); 
-        console.log(winner);
-    };
-
 
     return {renderBoard,checkWinner,endGame,tieGame};
 })();
