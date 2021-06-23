@@ -70,36 +70,29 @@ body {
 
 }
 
-.symbolarea {
-    display:flex;
-    justify-content: center;
-}
 
-
-.players {
-    font-size: 38px;
+.player1, .player2 {
+    font-size: 48px;
     color: white;
+    text-align: center;
+    font-family: 'Do Hyeon', sans-serif;
     text-shadow: 1px 1px blue,1px 1px blue,1px 1px blue,1px 1px blue;
-    margin-right: 10px;
-    margin-left:10px;
+    margin-right: 30px;
+    margin-left: 30px;
+    margin-bottom: 50px;
     
 }
 
-.symbols {
-    font-size: 40px;
-    font-family: 'Do Hyeon', sans-serif;
-    color: white;
-    text-shadow: 1px 1px blue,1px 1px blue,1px 1px blue,1px 1px blue;
-    margin-right: 55px;
-    margin-left: 55px;
-    margin-bottom: 30px;
+.player-active{
+    color:red;
 }
-
-
 
 .winner {
     font-size: 48px;
     text-align: center;
+    color: white;
+    font-family: 'Do Hyeon', sans-serif;
+    text-shadow: 1px 1px blue,1px 1px blue,1px 1px blue,1px 1px blue;
     margin-top:20vw;
     margin-bottom:20px;
 }

@@ -17,7 +17,6 @@ start.addEventListener("click",()=>{
     const player1=Player('Player 1','X');
     const player2=Player('Player 2','O');
 
-
     gameBoard.renderBoard(player1,player2);
     game.play(player1,player2);
 });
@@ -31,32 +30,38 @@ const gameBoard = (()=>{
     const renderBoard = (player1,player2)=>{              
 
         const playerNames = document.createElement('div');
-        const playerSymbols=document.createElement('div');
-        const playerName1 = document.createElement('div');
-        const playerName2 = document.createElement('div');
-        const playerSymbol1 = document.createElement('div');
-        const playerSymbol2 = document.createElement('div');
+
+        const player1div = document.createElement('div');
+        const playerName1 = document.createElement('p');
+        const playerSymbol1 = document.createElement('p');
+
+        const player2div = document.createElement('div');
+        const playerName2 = document.createElement('p');
+        const playerSymbol2 = document.createElement('p');
+        
         const gamearea = document.createElement("div");
 
         gamearea.classList.add("gameboard");
         playerNames.classList.add("playerarea");
-        playerSymbols.classList.add("symbolarea");
-        playerName1.classList.add("players");
-        playerName2.classList.add("players");
-        playerSymbol1.classList.add("symbols");
-        playerSymbol2.classList.add("symbols");
+
+        player1div.classList.add('player1');
+        player1div.classList.add('player-active');
+        player2div.classList.add('player2');
         playerName1.textContent=player1.name;
         playerName2.textContent=player2.name;
         playerSymbol1.textContent="X";
         playerSymbol2.textContent="O";
 
         startscreen.appendChild(playerNames);
-        startscreen.appendChild(playerSymbols);
         startscreen.appendChild(gamearea);
-        playerNames.appendChild(playerName1);
-        playerNames.appendChild(playerName2);
-        playerSymbols.appendChild(playerSymbol1);
-        playerSymbols.appendChild(playerSymbol2);
+
+        playerNames.appendChild(player1div);
+        player1div.appendChild(playerName1);
+        player1div.appendChild(playerSymbol1);
+
+        playerNames.appendChild(player2div);
+        player2div.appendChild(playerName2);
+        player2div.appendChild(playerSymbol2);
         
      
         for (let i =0;i<9;i++){
@@ -101,7 +106,7 @@ const gameBoard = (()=>{
         winName.classList.add('winner');
 
         
-        winName.textContent=`${player} is the winner`;
+        winName.textContent=`${player} Wins!`;
         
         
         restart.classList.add('restart');
@@ -150,7 +155,7 @@ const gameBoard = (()=>{
         const restart = document.createElement('button');
         const exit = document.createElement('button');
         winName.classList.add('winner');
-        winName.textContent="Tie Game";
+        winName.textContent="Tie Game, Try Again";
         restart.classList.add('restart');
         exit.classList.add('exit');
         restart.textContent="Play Again?";
@@ -163,6 +168,7 @@ const gameBoard = (()=>{
             startscreen.removeChild(winName);
             startscreen.removeChild(restart);
             startscreen.removeChild(exit);
+            startscreen.appendChild(title);
             for (let i =0;i<board.length;i++){
                 board[i].textContent="";
             }
@@ -254,6 +260,8 @@ const game =(()=>{
         
         const square = document.querySelectorAll(".gamesquare");
         gameBoard.board=Array.from(square);
+        const activePlayer1 = document.querySelector(".player1");
+        const activePlayer2 = document.querySelector(".player2");
 
         for (let i =0;i<gameBoard.board.length; i++){
             
@@ -265,6 +273,8 @@ const game =(()=>{
                 }
 
                 if(turn=='player1') {
+                    activePlayer1.classList.remove("player-active");
+                    activePlayer2.classList.add("player-active");
                     gameBoard.board[i].textContent=player1.symbol;
                     gameBoard.checkWinner(gameBoard.board,player1);
                     turn ='player2';
@@ -272,6 +282,8 @@ const game =(()=>{
                 }
                  
                 else {
+                    activePlayer2.classList.remove("player-active");
+                    activePlayer1.classList.add("player-active");
                     gameBoard.board[i].textContent=player2.symbol;
                     gameBoard.checkWinner(gameBoard.board,player2);
                     turn ='player1';
