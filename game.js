@@ -70,24 +70,6 @@ const gameBoard = (()=>{
             gamearea.appendChild(gamesquare);
         }
 
-        playerName1.addEventListener('click',()=>{
-            playerNames.removeChild(playerName1);
-            const nameInput=document.createElement("input");
-            const nameSubmit=document.createElement("submit");
-            nameInput.type="text";
-            nameSubmit.textContent="Enter";
-            nameSubmit.setAttribute("style","display:inline-block; cursor:pointer; background-color:blue;");
-            playerNames.appendChild(nameInput);
-            playerNames.appendChild(nameSubmit);
-
-            nameSubmit.addEventListener("click",()=>{
-                player1.name=nameInput.textContent;
-                playerNames.removeChild(nameInput);
-                playerNames.removeChild(nameSubmit);
-                playerNames.appendChild(playerName1);
-            });
-
-        });
     
     };
 

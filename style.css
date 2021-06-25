@@ -2,21 +2,11 @@ body {
     background-color: #121212;
 }
 
-@keyframes title-bounce {
-    
-    50% {transform:translateY(10px);}
-    
-    100% {transform:translateY(-10px);}
-}
-
 #title {
     font-family: 'Do Hyeon', sans-serif;
     color:white;
     text-shadow: 1px 1px blue,1px 1px blue,1px 1px blue,1px 1px blue;
     text-align: center;
-    /*animation-name: title-bounce;
-    animation-duration: 4s;
-    animation-iteration-count: infinite;*/
     margin-top: 18vw;
     font-size: 48px;
     margin-bottom: 30px;
@@ -27,12 +17,12 @@ body {
     display: block;
     margin-left: 42vw;
     margin-top: 40px;
-    box-shadow: 2px 2px blue;
+    box-shadow: 2px 2px #3700B3;
     border-radius: 3px;
     height:100px;
     width:200;
     font-size: 40px;
-    background-color: aquamarine;
+    background-color: #BB86FC;
 }
 
 #start:hover{
@@ -53,15 +43,20 @@ body {
 .gamesquare {
     cursor: pointer;
     font-family: 'Do Hyeon', sans-serif;
-    text-shadow: 1px 1px white, 1px 1px white, 1px 1px white, 1px 1px white;
-    color: blue;
+    text-shadow: 1px 1px #3700B3, 1px 1px #3700B3, 1px 1px #3700B3, 1px 1px #3700B3;
+    color: #BB86FC;
     float: left;
     height:123px;
     width:123px;
-    border: 2px solid white;
+    background-color: #12121241;
+    border: 2px solid #BB86FC;
     font-size:120px;
     text-align: center;
     vertical-align: center;
+}
+
+.gamesquare:hover {
+    background-color: rgba(95, 158, 160, 0.247);
 }
 
 .playerarea {
@@ -104,8 +99,8 @@ body {
     margin-left:43vw;
     
     font-size: 24px;
-    background-color: aquamarine;
-    box-shadow: 2px 2px blue;
+    background-color: #BB86FC;
+    box-shadow: 2px 2px #3700B3;
     border-radius: 3px;
 }
 
